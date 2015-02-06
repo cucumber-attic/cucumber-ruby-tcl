@@ -5,7 +5,7 @@ module Cucumber
     ActivateSteps = Cucumber::Core::Filter.new(:step_definitions) do
       def test_case(test_case)
         activated_steps = test_case.test_steps.map do |test_step|
-          step_definitions.attempt_to_activate(test_step)
+          attempt_to_activate(test_step)
         end
         test_case.with_steps(activated_steps).describe_to receiver
       end
@@ -13,7 +13,8 @@ module Cucumber
       private
 
       def attempt_to_activate(test_step)
-        test_step.with_action { puts "Hello world" }
+        return test_step unless step_definitions.match?(test_step.name)
+        test_step.with_action &step_definitions.action_for(test_step.name)
       end
     end
 
@@ -24,16 +25,12 @@ module Cucumber
         @tcl = ::Tcl::Interp.load_from_file(path)
       end
 
-      def attempt_to_activate(test_step)
-        if @tcl.proc('step_definition_exists').call(test_step.name) == "1"
-          test_step.with_action { @tcl.proc('execute_step_definition').call(test_step.name) }
-        else
-          test_step
-        end
+      def match?(step_name)
+        @tcl.proc('step_definition_exists').call(step_name) == "1"
       end
 
-      def load
-        self
+      def action_for(step_name)
+        proc { @tcl.proc('execute_step_definition').call(step_name) }
       end
     end
   end
