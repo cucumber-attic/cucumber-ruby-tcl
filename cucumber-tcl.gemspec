@@ -4,7 +4,7 @@ $LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
 Gem::Specification.new do |s|
   s.name        = 'cucumber-tcl'
   s.version     = File.read('lib/cucumber/tcl/version')
-  s.authors     = ["Matt Wynne", "Jon Overs", "Barney Fisher"]
+  s.authors     = ["Matt Wynne", "Jon Owers", "Barney Fisher"]
   s.description = "TCL plugin for Cucumber"
   s.summary     = "cucumber-tcl-#{s.version}"
   s.email       = 'cukes@googlegroups.com'
