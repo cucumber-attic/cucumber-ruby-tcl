@@ -11,13 +11,9 @@ Feature: Define a step
       """
       require 'cucumber/tcl'
       """
-    And a file named "features/support/env.tcl" with:
+    And a file named "features/step_defintions/steps.tcl" with:
       """
-      proc step_definition_exists {step_name} {
-        return 1
-      }
-
-      proc execute_step_definition {step_name} {
+      Given { regexp {pass} } {
         puts "Hello world"
       }
       """
