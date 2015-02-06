@@ -1,12 +1,14 @@
-Cucumber TCL Bindings
-=====================
+Cucumber TCL
+============
 
-Define Cucumber steps using TCL code.
+Drive your TCL code with Cucumber.
 
 How to use
 ----------
 
-First, add the project to your Gemfile:
+This guide assumes you already have [Cucumber-Ruby](https://github.com/cucumber/cucumber) installed.
+
+First, add the `cucumber-tcl` plugin to your Gemfile:
 
     gem 'cucumber-tcl'
 
