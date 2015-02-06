@@ -1,0 +1,16 @@
+language: ruby
+
+env:
+  - TCL_VERSION=8.6.0
+
+install:
+  - curl -L "http://prdownloads.sourceforge.net/tcl/tcl${TCL_VERSION}-src.tar.gz" | tar xzfv -
+  - cd "tcl${TCL_VERSION}/unix"
+  - ./configure
+  - make
+  - sudo make install
+  - sudo ln -sf "/usr/local/bin/tclsh$(echo $TCL_VERSION | sed -e 's/\.[0-9]*$//')" /usr/local/bin/tclsh
+  - cd ../..
+  - bundle install
+
+script: rake
