@@ -14,7 +14,7 @@ Install it:
 
     bundle install
 
-Add a file to Cucumber's load path, like `features/support/env.rb` that has the following line:
+In a file in Cucumber's load path, like `features/support/env.rb`, add the following line:
 
     require 'cucumber/tcl'
 
