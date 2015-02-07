@@ -7,6 +7,7 @@ set STEPS [list]
 #
 proc Given {re body} {
   global STEPS
+  puts "In given - $re"
   lappend STEPS [list $re $body]
 }
 
@@ -58,7 +59,7 @@ proc execute_step_definition { step_name } {
 
 #TODO load step defs from features/**/*.tcl
 #TODO let that path be configurable from cucumber-ruby
-foreach x [glob -nocomplain -directory features/step_definitions *.tcl] {
-    puts $x
+foreach x [glob -directory [file nor features/step_definitions] *.tcl] {
+    source $x
 }
 
