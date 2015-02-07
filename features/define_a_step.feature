@@ -13,7 +13,7 @@ Feature: Define a step
       """
     And a file named "features/step_defintions/steps.tcl" with:
       """
-      Given { regexp {pass} } {
+      Given {^passing$} {
         puts "Hello world"
       }
       """
