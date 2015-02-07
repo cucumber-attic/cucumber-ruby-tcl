@@ -2,7 +2,7 @@ language: ruby
 
 install:
   - sudo apt-get update
-  - sudo apt-get install tcl-devel
+  - sudo apt-get install tcl-dev
   - bundle install
 
 script: bundle exec rake
