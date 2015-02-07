@@ -9,8 +9,7 @@ install:
   - ./configure
   - make
   - sudo make install
-  - sudo ln -sf "/usr/local/bin/tclsh$(echo $TCL_VERSION | sed -e 's/\.[0-9]*$//')" /usr/local/bin/tclsh
   - cd ../..
   - bundle install
 
-script: rake
+script: bundle exec rake
