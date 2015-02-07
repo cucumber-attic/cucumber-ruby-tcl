@@ -1,7 +1,8 @@
 language: ruby
 
 install:
-  - sudo apt-get install libtcl8.6
+  - sudo apt-get update
+  - sudo apt-get install libtcl
   - bundle install
 
 script: bundle exec rake
