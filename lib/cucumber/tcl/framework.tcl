@@ -59,7 +59,7 @@ proc execute_step_definition { step_name } {
 
 #TODO load step defs from features/**/*.tcl
 #TODO let that path be configurable from cucumber-ruby
-foreach x [glob -directory [file nor features/step_definitions] *.tcl] {
+foreach x [glob features/**/*.tcl] {
     source $x
 }
 
