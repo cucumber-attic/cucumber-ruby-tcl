@@ -7,7 +7,6 @@ set STEPS [list]
 #
 proc Given {re body} {
   global STEPS
-  puts "In given - $re"
   lappend STEPS [list $re $body]
 }
 
@@ -46,14 +45,15 @@ proc execute_step_definition { step_name } {
   global STEPS
 
   foreach step $STEPS {
-    existing_step_name [lindex $step 0]
-    existing_step_body [lindex $step 1]
+    set existing_step_name [lindex $step 0]
+    set existing_step_body [lindex $step 1]
 
     if {[regexp $existing_step_name $step_name matchresult]} {
-      eval $step_body
+      eval $existing_step_body
       return 1
     }
   }
+  return 0
 
 }
 
