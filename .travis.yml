@@ -1,7 +1,7 @@
 language: ruby
 
 env:
-  - TCL_VERSION=8.5
+  - TCL_VERSION=8.5.17
 
 install:
   - curl -L "http://prdownloads.sourceforge.net/tcl/tcl${TCL_VERSION}-src.tar.gz" | tar xzfv -
