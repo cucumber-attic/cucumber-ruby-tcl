@@ -1,0 +1,10 @@
+machine:
+  pre:
+    - sudo apt-get install tcl8.5-dev
+  environment:
+    C_INCLUDE_PATH: /usr/include/tcl8.5/
+
+test:
+  override:
+    - bundle exec rake
+
