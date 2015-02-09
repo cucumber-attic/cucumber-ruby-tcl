@@ -8,6 +8,8 @@ Drive your TCL code with Cucumber.
 How to use
 ----------
 
+Ensure that you have tcl8.5 and dev libraries, as well as ruby > 1.9.1 along with its dev libraries installed.
+
 This guide assumes you already have [Cucumber-Ruby](https://github.com/cucumber/cucumber) installed.
 
 First, add the `cucumber-tcl` plugin to your Gemfile:
@@ -22,14 +24,17 @@ In a file in Cucumber's load path, like `features/support/env.rb`, add the follo
 
     require 'cucumber/tcl'
 
-Finally, add a TCL entry point, at `features/support/env.tcl`.
+You should now be able to start writing features, and implementing the step definitions in tcl. These should be placed in a tcl file below the features directory. To create the step definitions, the cucumber-tcl extension adds Given, When, Then and And procs for you to call, for example:
 
-Your TCL program must implement two procs: `step_definition_exists` and `execute_step_definition`. For example:
-
-    proc step_definition_exists {step_name} {
-      return 1
+    Given {^I am a logged in user$} {
+      puts "I'm a logged in user
     }
 
-    proc execute_step_definition {step_name} {
-      puts "Hello world"
+    When {^I purchase a ticket$} {
+      puts "Purchase a ticket"
     }
+
+    Then {^I receive confirmation of the purchase$} {
+      puts "Purchase confirmation"
+    }
+
