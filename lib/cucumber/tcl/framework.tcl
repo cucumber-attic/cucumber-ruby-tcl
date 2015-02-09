@@ -1,4 +1,11 @@
 
+# Set a variable to allow this to be more easily tested
+if {[info exists env(TEST)] && $env(TEST) eq 1} {
+  set TEST 1
+} else {
+  set TEST 0
+}
+
 #TODO make this a namespace to avoid globals
 set STEPS [list]
 
@@ -45,7 +52,7 @@ proc execute_step_definition { step_name } {
 }
 
 
-proc _search_steps {step_name execute} {
+proc _search_steps {step_name {execute 0}} {
   global STEPS
 
   foreach step $STEPS {
@@ -62,8 +69,9 @@ proc _search_steps {step_name execute} {
   return 0
 }
 
-#TODO let that path be configurable from cucumber-ruby
-foreach x [glob features/**/*.tcl] {
-    source $x
+if {$TEST ne 1} {
+  #TODO let that path be configurable from cucumber-ruby
+  foreach x [glob features/**/*.tcl] {
+      source $x
+  }
 }
-
