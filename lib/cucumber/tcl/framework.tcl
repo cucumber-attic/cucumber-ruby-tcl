@@ -30,18 +30,22 @@ proc And {re body} {
 proc step_definition_exists { step_name } {
   global STEPS
 
-  foreach step $STEPS {
-    set existing_step_name [lindex $step 0]
-
-    if {[regexp $existing_step_name $step_name matchresult]} {
-      return 1
-    }
-  }
-  return 0
+  set res [_search_steps $step_name 1]
+  return $res
 }
+
 
 proc execute_step_definition { step_name } {
   # TODO: handle parameters in the regexp
+  global STEPS
+
+  set res [_search_steps $step_name 1]
+  return $res
+
+}
+
+
+proc _search_steps {step_name execute} {
   global STEPS
 
   foreach step $STEPS {
@@ -49,15 +53,15 @@ proc execute_step_definition { step_name } {
     set existing_step_body [lindex $step 1]
 
     if {[regexp $existing_step_name $step_name matchresult]} {
-      eval $existing_step_body
+      if {$execute == 1} {
+        eval $existing_step_body
+      }
       return 1
     }
   }
   return 0
-
 }
 
-#TODO load step defs from features/**/*.tcl
 #TODO let that path be configurable from cucumber-ruby
 foreach x [glob features/**/*.tcl] {
     source $x
