@@ -40,6 +40,43 @@ test Given-3 {calling Given with 3 parameters adds a new entry to the STEPS list
   -result 1
 }
 
+#
+# Test _add_step
+#
+test _add_step-1 {calling _add_step with 2 parameters adds a new entry to the STEPS list with an empty parameters list} {
+  -setup {
+    set ::STEPS [list]
+  }
+  -body {
+    _add_step {^Regular Expression$} { puts "Given RegExp" }
+    expr { [llength $::STEPS] == 1 && [llength [lindex $::STEPS 0]] == 3}
+  }
+  -result 1
+}
+
+test _add_step-2 {calling _add_step twice adds 2 entries to the STEPS list} {
+  -setup {
+    set ::STEPS [list]
+  }
+  -body {
+    _add_step {^Regular Expression$} { puts "Given RegExp" }
+    _add_step {^Regular Expression 2$} { puts "Given RegExp 2" }
+    expr { [llength $::STEPS] == 2 && [llength [lindex $::STEPS 0]] == 3}
+  }
+  -result 1
+}
+
+test _add_step-3 {calling _add_step with 3 parameters adds a new entry to the STEPS list} {
+  -setup {
+    set ::STEPS [list]
+  }
+  -body {
+    _add_step {^Regular Expression (\d+)$} {match} { puts "Given RegExp $match" }
+    expr { [llength $::STEPS] == 1 && [llength [lindex $::STEPS 0]] == 3}
+  }
+  -result 1
+}
+
 
 
 #

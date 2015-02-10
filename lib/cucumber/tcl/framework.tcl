@@ -13,39 +13,25 @@ set STEPS [list]
 # Define procs to match Gherkin keyworkds that put data in the STEPS array
 #
 proc Given args {
-
-  global STEPS
-
-  if {[llength $args] == 2} {
-    set re [lindex $args 0]
-    set params {}
-    set body [lindex $args 1]
-  } elseif {[llength $args] == 3} {
-    set re [lindex $args 0]
-    set params [lindex $args 1]
-    set body [lindex $args 2]
-  }
-    
-  lappend STEPS [list $re $params $body]
+  _add_step {*}$args
 }
 
 proc When args {
-  global STEPS
-  if {[llength $args] == 2} {
-    set re [lindex $args 0]
-    set params {}
-    set body [lindex $args 1]
-  } elseif {[llength $args] == 3} {
-    set re [lindex $args 0]
-    set params [lindex $args 1]
-    set body [lindex $args 2]
-  }
-    
-  lappend STEPS [list $re $params $body]
+  _add_step {*}$args
 }
 
 proc Then args {
+  _add_step {*}$args
+}
+
+proc And args {
+  _add_step {*}$args
+}
+
+proc _add_step args {
+
   global STEPS
+
   if {[llength $args] == 2} {
     set re [lindex $args 0]
     set params {}
@@ -57,11 +43,6 @@ proc Then args {
   }
     
   lappend STEPS [list $re $params $body]
-}
-
-proc And args {
-  global STEPS
-  lappend STEPS [list {} {} {}]
 }
 
 #
