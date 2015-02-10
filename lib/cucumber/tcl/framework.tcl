@@ -12,31 +12,61 @@ set STEPS [list]
 #
 # Define procs to match Gherkin keyworkds that put data in the STEPS array
 #
-proc Given {re body} {
+proc Given args {
+
   global STEPS
-  lappend STEPS [list $re $body]
+
+  if {[llength $args] == 2} {
+    set re [lindex $args 0]
+    set params {}
+    set body [lindex $args 1]
+  } elseif {[llength $args] == 3} {
+    set re [lindex $args 0]
+    set params [lindex $args 1]
+    set body [lindex $args 2]
+  }
+    
+  lappend STEPS [list $re $params $body]
 }
 
-proc When {re body} {
+proc When args {
   global STEPS
-  lappend STEPS [list $re $body]
+  if {[llength $args] == 2} {
+    set re [lindex $args 0]
+    set params {}
+    set body [lindex $args 1]
+  } elseif {[llength $args] == 3} {
+    set re [lindex $args 0]
+    set params [lindex $args 1]
+    set body [lindex $args 2]
+  }
+    
+  lappend STEPS [list $re $params $body]
 }
 
-proc Then {re body} {
+proc Then args {
   global STEPS
-  lappend STEPS [list $re $body]
+  if {[llength $args] == 2} {
+    set re [lindex $args 0]
+    set params {}
+    set body [lindex $args 1]
+  } elseif {[llength $args] == 3} {
+    set re [lindex $args 0]
+    set params [lindex $args 1]
+    set body [lindex $args 2]
+  }
+    
+  lappend STEPS [list $re $params $body]
 }
 
-proc And {re body} {
+proc And args {
   global STEPS
-  lappend STEPS [list $re $body]
+  lappend STEPS [list {} {} {}]
 }
 
 #
 # Procs needed by cucumber for checking and executing steps
 proc step_definition_exists { step_name } {
-  global STEPS
-
   set res [_search_steps $step_name 1]
   return $res
 }
@@ -44,8 +74,6 @@ proc step_definition_exists { step_name } {
 
 proc execute_step_definition { step_name } {
   # TODO: handle parameters in the regexp
-  global STEPS
-
   set res [_search_steps $step_name 1]
   return $res
 
@@ -56,11 +84,14 @@ proc _search_steps {step_name {execute 0}} {
   global STEPS
 
   foreach step $STEPS {
-    set existing_step_name [lindex $step 0]
-    set existing_step_body [lindex $step 1]
+    set existing_step_name   [lindex $step 0]
+    set existing_step_params [lindex $step 1]
+    set existing_step_body   [lindex $step 2]
 
-    if {[regexp $existing_step_name $step_name matchresult]} {
+
+    if {[regexp $existing_step_name $step_name matchresult {*}[join $existing_step_params]]} {
       if {$execute == 1} {
+#	puts "JOWERS -> $existing_step_name, $step_name, $matchresult"
         eval $existing_step_body
       }
       return 1
