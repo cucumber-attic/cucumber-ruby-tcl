@@ -29,7 +29,7 @@ In a file in Cucumber's load path, like `features/support/env.rb`, add the follo
 
     require 'cucumber/tcl'
 
-You should now be able to start writing features, and implementing the step definitions in Tcl. These should be placed in a `.tcl` file below the features directory. To create the step definitions, you're provided with `Given`, `When`, `Then` and `And` procs for you to call, for example:
+You should now be able to start writing features, and implementing the step definitions in Tcl. These should be placed in `.tcl` files below the features directory. To create the step definitions, you're provided with `Given`, `When`, `Then` and `And` procs for you to call, for example:
 
     Given {^I am a logged in user$} {
       puts "I'm a logged in user
