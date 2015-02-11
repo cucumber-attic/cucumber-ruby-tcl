@@ -72,7 +72,6 @@ proc _search_steps {step_name {execute 0}} {
 
     if {[regexp $existing_step_name $step_name matchresult {*}[join $existing_step_params]]} {
       if {$execute == 1} {
-#	puts "JOWERS -> $existing_step_name, $step_name, $matchresult"
         eval $existing_step_body
       }
       return 1
