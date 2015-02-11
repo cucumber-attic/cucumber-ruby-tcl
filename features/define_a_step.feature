@@ -23,7 +23,7 @@ Feature: Define a step
       Hello world
       """
 
-  Scenario: Define a passing step with a parameter
+  Scenario: Define a step with a parameter
     Given a file named "features/test.feature" with:
       """
       Feature:
