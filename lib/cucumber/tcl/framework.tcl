@@ -40,6 +40,9 @@ proc _add_step args {
     set re [lindex $args 0]
     set params [lindex $args 1]
     set body [lindex $args 2]
+  } else {
+    error "The parameters for this procedure are regular_expression ?list_of_capture_variables? body"
+    return 0
   }
     
   lappend STEPS [list $re $params $body]

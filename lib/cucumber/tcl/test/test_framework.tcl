@@ -77,6 +77,14 @@ test _add_step-3 {calling _add_step with 3 parameters adds a new entry to the ST
   -result 1
 }
 
+test _add_step-4 {calling _add_step with more than 3 parameters adds a new entry to the STEPS list} {
+  -body {
+    _add_step {^Match1 (\w+) Match2 (\d+) Match3 (\d+)$} {match1} {match2} {match3} { puts "Given RegExp $match" }
+  }
+  -returnCodes error
+  -result {The parameters for this procedure are regular_expression ?list_of_capture_variables? body}
+}
+
 
 
 #
