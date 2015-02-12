@@ -42,3 +42,14 @@ You should now be able to start writing features, and implementing the step defi
     Then {^I receive confirmation of the purchase$} {
       puts "Purchase confirmation"
     }
+
+If your regular expression captures any matches, you should provide a list of variable names as the second parameter to any of these procedure calls. These will then be available to your script, for example:
+
+    Given {^I am logged in with username (\w+)$} {username} {
+      puts "Username is $username"
+    }
+
+    Given {^I buy (\d+) cucumbers for $(\d+)$} {quantity price} {
+      puts "$quantity cucumbers bought. Price was $price"
+    }
+
