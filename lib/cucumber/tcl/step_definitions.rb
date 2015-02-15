@@ -24,7 +24,12 @@ module Cucumber
         #
         # I suppose we need to pass it to the Tcl now, but maybe not if it's the null object (EmptyMultilineArgument)
         # You can call describe_to on these objects to find out what they are.
-        proc { @tcl.proc('execute_step_definition').call(step_name) }
+
+        if multiline_arg.respond_to?('content')
+          proc { @tcl.proc('execute_step_definition').call(step_name, multiline_arg.content) }
+        else
+          proc { @tcl.proc('execute_step_definition').call(step_name) }
+        end
       end
     end
 

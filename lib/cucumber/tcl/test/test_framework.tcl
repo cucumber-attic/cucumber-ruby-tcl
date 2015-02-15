@@ -227,6 +227,36 @@ test _search_steps-7 {_search_steps returns 1 and executes body of step if there
   -output {Second Step*}
 }
 
+# Testing multiline args
+test _search_steps-8 {_search_steps returns 1 and executes body of step if there is a matching step, execute is set to 1 and there is a multiline_arg passed in} {
+  -setup {
+    set ::STEPS [list \
+      [list {^First Step$} {} {puts "First Step"}] \
+      [list {^Second Step$} {content} {puts "$content"}] \
+    ]
+  }
+  -body {
+    _search_steps {Second Step:} {1} {Multiline Content}
+  }
+  -result 1
+  -match glob
+  -output {Multiline Content*}
+}
+
+test _search_steps-9 {_search_steps returns 1 and executes body of step if there is a matching step, execute is set to 1 and there is a multiline_arg passed in and there is a parameter match in the regexp} {
+  -setup {
+    set ::STEPS [list \
+      [list {^First Step$} {} {puts "First Step"}] \
+      [list {^Second (\w+)$} {match1 content} {puts "content=$content, match=$match1"}] \
+    ]
+  }
+  -body {
+    _search_steps {Second Step:} {1} {Multiline Content}
+  }
+  -result 1
+  -match glob
+  -output {content=Multiline Content, match=Step*}
+}
 
 #
 # Cleanup
