@@ -16,19 +16,22 @@ module Cucumber
 
       def action_for(test_step)
         step_name = test_step.name
-        multiline_arg = test_step.source.last.multiline_arg
-        # multiline_arg will either be:
-        # http://www.rubydoc.info/github/cucumber/cucumber-ruby-core/master/Cucumber/Core/Ast/EmptyMultilineArgument
-        # http://www.rubydoc.info/github/cucumber/cucumber-ruby-core/master/Cucumber/Core/Ast/DocString
-        # http://www.rubydoc.info/github/cucumber/cucumber-ruby-core/master/Cucumber/Core/Ast/DataTable
-        #
-        # I suppose we need to pass it to the Tcl now, but maybe not if it's the null object (EmptyMultilineArgument)
-        # You can call describe_to on these objects to find out what they are.
+        arguments = ArgumentList.new(step_name)
+        test_step.source.last.multiline_arg.describe_to(arguments)
+        proc { @tcl.proc('execute_step_definition').call(*arguments) }
+      end
 
-        if multiline_arg.respond_to?('content')
-          proc { @tcl.proc('execute_step_definition').call(step_name, multiline_arg.content) }
-        else
-          proc { @tcl.proc('execute_step_definition').call(step_name) }
+      class ArgumentList
+        def initialize(*args)
+          @arguments = args
+        end
+
+        def doc_string(arg)
+          @arguments << arg.content
+        end
+
+        def to_a
+          @arguments
         end
       end
     end
