@@ -232,7 +232,7 @@ test _search_steps-8 {_search_steps returns 1 and executes body of step if there
   -setup {
     set ::STEPS [list \
       [list {^First Step$} {} {puts "First Step"}] \
-      [list {^Second Step$} {content} {puts "$content"}] \
+      [list {^Second Step:$} {content} {puts "$content"}] \
     ]
   }
   -body {
@@ -247,7 +247,7 @@ test _search_steps-9 {_search_steps returns 1 and executes body of step if there
   -setup {
     set ::STEPS [list \
       [list {^First Step$} {} {puts "First Step"}] \
-      [list {^Second (\w+)$} {match1 content} {puts "content=$content, match=$match1"}] \
+      [list {^Second (\w+):$} {match1 content} {puts "content=$content, match=$match1"}] \
     ]
   }
   -body {

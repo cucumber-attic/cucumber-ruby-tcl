@@ -16,7 +16,7 @@ Feature: DocStrings
       """
     And a file named "features/step_defintions/steps.tcl" with:
       """
-      Given {^passing with a DocString$} {content} {
+      Given {^passing with a DocString:$} {content} {
         puts "Hello $content"
       }
       """

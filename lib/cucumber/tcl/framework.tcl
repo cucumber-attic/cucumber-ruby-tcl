@@ -67,10 +67,6 @@ proc execute_step_definition { step_name {multiline_args {}} } {
 proc _search_steps {step_name {execute 0} {multiline_args {}}} {
   global STEPS
 
-  # If multiline_args have been passed, the last line of the step_name will be :
-  # Remove any trailing : to allow matches
-  set step_name [regsub {:$} $step_name {}]
-
   foreach step $STEPS {
     set existing_step_name   [lindex $step 0]
     set existing_step_params [lindex $step 1]
