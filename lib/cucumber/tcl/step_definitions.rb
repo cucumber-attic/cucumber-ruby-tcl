@@ -30,6 +30,10 @@ module Cucumber
           @arguments << arg.content
         end
 
+        def data_table(arg)
+          @arguments << arg.raw
+        end
+
         def to_a
           @arguments
         end
