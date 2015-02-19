@@ -9,10 +9,7 @@ module Cucumber
       end
 
       def to_s
-        rows = @original.raw.map { |row|
-          to_tcl_list(row)
-        }
-        to_tcl_list(rows)
+        to_tcl_list(@original.raw.map { |row| to_tcl_list(row) })
       end
 
       private
