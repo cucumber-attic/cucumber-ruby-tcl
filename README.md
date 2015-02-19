@@ -12,7 +12,6 @@ You'll need the following:
 
 * tcl8.5 and dev libraries
 * ruby > 1.9.1 along with its dev libraries
-* [Cucumber-Ruby](https://github.com/cucumber/cucumber)
 
 How to use
 ----------
