@@ -7,7 +7,7 @@ module Cucumber::Tcl
       raw = [["a", "b"], ["c", "d"]]
       original = Cucumber::Core::Ast::DataTable.new(raw, Cucumber::Core::Ast::Location.new(__FILE__, 8))
       table = DataTable.new(original)
-      expect(table.to_s).to eq '{{"a" "b"} {"c" "d"}}'
+      expect(table.to_s).to eq '{{a} {b}} {{c} {d}}'
     end
   end
 end

@@ -10,8 +10,7 @@ module Cucumber
 
       def to_s
         rows = @original.raw.map { |row|
-          cells = row.map { |cell| %{"#{cell}"} }
-          to_tcl_list(cells)
+          to_tcl_list(row)
         }
         to_tcl_list(rows)
       end
@@ -19,7 +18,7 @@ module Cucumber
       private
 
       def to_tcl_list(array)
-        "{" + array.join(" ") + "}"
+        array.map { |element| "{" + element + "}" }.join(" ")
       end
     end
 

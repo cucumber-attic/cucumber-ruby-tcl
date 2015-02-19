@@ -23,5 +23,5 @@ Feature: DataTables
     When I run `cucumber`
     Then it should pass with:
       """
-      {{"a" "b"} {"c" "d"}}
+      {{a} {b}} {{c} {d}}
       """
