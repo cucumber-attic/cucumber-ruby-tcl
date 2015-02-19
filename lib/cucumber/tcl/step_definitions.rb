@@ -1,4 +1,5 @@
 require 'tcl'
+require 'cucumber/tcl/data_table'
 
 module Cucumber
   module Tcl
@@ -31,7 +32,7 @@ module Cucumber
         end
 
         def data_table(arg)
-          @arguments << arg.raw
+          @arguments << DataTable.new(arg)
         end
 
         def to_a
