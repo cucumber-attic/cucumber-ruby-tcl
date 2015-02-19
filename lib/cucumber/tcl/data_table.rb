@@ -5,11 +5,11 @@ module Cucumber
     # string representation is easy to parse into a tcl list.
     class DataTable
       def initialize(original)
-        @original = original
+        @raw = original.raw
       end
 
       def to_s
-        to_tcl_list(@original.raw.map { |row| to_tcl_list(row) })
+        to_tcl_list(@raw.map { |row| to_tcl_list(row) })
       end
 
       private
