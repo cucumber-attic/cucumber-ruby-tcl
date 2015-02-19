@@ -9,6 +9,13 @@ module Cucumber
         @tcl = ::Tcl::Interp.load_from_file(path)
       end
 
+      def attempt_to_activate(test_step)
+        return test_step unless match?(test_step)
+        test_step.with_action &action_for(test_step)
+      end
+
+      private
+
       def match?(test_step)
         step_name = test_step.name
         @tcl.proc('step_definition_exists').call(step_name) == "1"
