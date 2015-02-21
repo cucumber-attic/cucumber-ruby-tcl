@@ -16,15 +16,14 @@ Feature: Reset state
       """
     And a file named "features/step_definitions/steps.tcl" with:
       """
-      namespace eval my_code {
-        global g
-      }
+      global g
+       
       Given {^I set a global variable$} {
-        set my_code::g value
+        set ::g value
       }
 
       When {^I print the global variable$} {
-        puts $my_code::g
+        puts $::g
       }
       """
     And a file named "features/support/env.rb" with:
@@ -34,5 +33,5 @@ Feature: Reset state
     When I run `cucumber`
     Then it should fail with:
       """
-      can't read "my_code::g": no such variable
+      can't read "::g": no such variable
       """
