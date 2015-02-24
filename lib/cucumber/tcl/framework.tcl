@@ -57,7 +57,6 @@ proc step_definition_exists { step_name } {
 
 
 proc execute_step_definition { step_name {multiline_args {}} } {
-  # TODO: handle parameters in the regexp
   set res [_search_steps $step_name 1 $multiline_args]
   return $res
 

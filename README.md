@@ -52,3 +52,39 @@ If your regular expression captures any matches, you should provide a list of va
       puts "$quantity cucumbers bought. Price was $price"
     }
 
+You can use basic tables in your scenarios. The data from the table s made available to your step definition, via the last variable name you pass into the capture list. For example, if you had the following step in your feature:
+
+    Given I have added the following products to my shopping cart:
+      | apple  | £2.00 |
+      | orange | £3.00 |
+      | banana | £1.50 |
+
+I could write the step definition for the Given step as:
+
+    Given {^I have added the following products to my shopping cart:$} {table_data} {
+      puts "$table_data"
+    }
+
+The data in the table is provided as a list of lists, so in the above example, table data would look like:
+
+    {"apple" "£2.00"} {"orange" "£3.00"} {"banana" "£1.50"}
+
+meaning you can access each element using `lindex`, e.g.
+
+    puts [lindex [lindex $table_data 0] 0]
+    apple
+
+If your step definition captures a match in the step definition as well as has a table, the table variable will always be last, e.g.
+
+    When I buy the following items from Tesco:
+      | cabbage |
+      | potato  |
+      | onion   |
+
+and in your step definition, you might have
+
+    Given {^I buy the following items from (\w+):$} {store items} {
+      puts "I've been shopping at $store"
+      puts "The first item I bought was [lindex $items 0]"
+    }
+

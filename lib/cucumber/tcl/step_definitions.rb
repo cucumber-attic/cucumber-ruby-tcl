@@ -1,4 +1,5 @@
 require 'tcl'
+require 'cucumber/tcl/data_table'
 
 module Cucumber
   module Tcl
@@ -35,6 +36,10 @@ module Cucumber
 
         def doc_string(arg)
           @arguments << arg.content
+        end
+
+        def data_table(arg)
+          @arguments << DataTable.new(arg)
         end
 
         def to_a
