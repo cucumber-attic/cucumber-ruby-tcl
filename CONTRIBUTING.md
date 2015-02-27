@@ -18,7 +18,7 @@ Now release it
 
 ## Gaining Release Karma
 
-To become a release manager, create a pull request adding your name to the list below, and include your Rubygems email address in the ticket. One of the existing Release managers will then add you.
+To become a release manager, create a pull request adding your name to the list below, and include your [Rubygems email address](https://rubygems.org/sign_up) in the ticket. One of the existing Release managers will then add you.
 
 Current release managers:
   * [Matt Wynne](https://github.com/mattwynne)
