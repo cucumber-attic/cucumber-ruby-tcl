@@ -21,7 +21,7 @@ Now release it
 To become a release manager, create a pull request adding your name to the list below, and include your Rubygems email address in the ticket. One of the existing Release managers will then add you.
 
 Current release managers:
-  * Matt Wynne
+  * [Matt Wynne](https://github.com/mattwynne)
 
 To grant release karma, issue the following command:
 
