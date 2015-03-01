@@ -22,6 +22,7 @@ To become a release manager, create a pull request adding your name to the list 
 
 Current release managers:
   * [Matt Wynne](https://github.com/mattwynne)
+  * [Jonathan Owers](https://github.com/jowers)
 
 To grant release karma, issue the following command:
 
