@@ -1,4 +1,5 @@
 require 'tcl'
+require 'cucumber/tcl/data_table'
 
 module Cucumber
   module Tcl
@@ -8,6 +9,13 @@ module Cucumber
         raise ArgumentError, "cucumber-tcl entry point #{path} does not exist." unless File.exists?(path)
         @tcl = ::Tcl::Interp.load_from_file(path)
       end
+
+      def attempt_to_activate(test_step)
+        return test_step unless match?(test_step)
+        test_step.with_action &action_for(test_step)
+      end
+
+      private
 
       def match?(test_step)
         step_name = test_step.name
@@ -31,7 +39,7 @@ module Cucumber
         end
 
         def data_table(arg)
-          @arguments << arg.raw
+          @arguments << DataTable.new(arg)
         end
 
         def to_a
