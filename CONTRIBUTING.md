@@ -16,14 +16,14 @@ Now release it
     git commit -m "Release `cat lib/cucumber/tcl/version`"
     rake release
 
-## Gaining Release Karma
+## Gaining Release Privileges
 
-To become a release manager, create a pull request adding your name to the list below, and include your [Rubygems email address](https://rubygems.org/sign_up) in the ticket. One of the existing Release managers will then add you.
+To become a release manager, create a pull request adding your name to the list below, and make sure to include a link to your [Rubygems profile](https://rubygems.org/sign_up). One of the existing release managers will then add you.
 
 Current release managers:
   * [Matt Wynne](https://rubygems.org/profiles/mattwynne)
   * [Jonathan Owers](https://rubygems.org/profiles/jowers)
 
-To grant release karma, issue the following command:
+To grant release privilege, issue the following command:
 
     gem owner cucumber-tcl --add <NEW OWNER RUBYGEMS EMAIL>
