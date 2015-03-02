@@ -10,7 +10,6 @@ namespace eval ::cucumber:: {
     set TEST 0
   }
 
-  namespace export source_steps
   namespace export step_definition_exists
   namespace export execute_step_definition
 
