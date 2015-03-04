@@ -12,6 +12,9 @@ namespace eval ::cucumber:: {
 
   namespace export step_definition_exists
   namespace export execute_step_definition
+  namespace export Given
+  namespace export When
+  namespace export Then
 
 }
 

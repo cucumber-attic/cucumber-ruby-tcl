@@ -12,7 +12,7 @@ test Given-1 {calling Given with 2 parameters adds a new entry to the STEPS list
     set ::cucumber::STEPS [list]
   }
   -body {
-    ::cucumber::Given {^Regular Expression$} { puts "Given RegExp" }
+    Given {^Regular Expression$} { puts "Given RegExp" }
     expr { [llength $::cucumber::STEPS] == 1 && [llength [lindex $::cucumber::STEPS 0]] == 3}
   }
   -result 1
@@ -23,8 +23,8 @@ test Given-2 {calling Given twice adds 2 entries to the STEPS list} {
     set ::cucumber::STEPS [list]
   }
   -body {
-    ::cucumber::Given {^Regular Expression$} { puts "Given RegExp" }
-    ::cucumber::Given {^Regular Expression 2$} { puts "Given RegExp 2" }
+    Given {^Regular Expression$} { puts "Given RegExp" }
+    Given {^Regular Expression 2$} { puts "Given RegExp 2" }
     expr { [llength $::cucumber::STEPS] == 2 && [llength [lindex $::cucumber::STEPS 0]] == 3}
   }
   -result 1
@@ -35,7 +35,7 @@ test Given-3 {calling Given with 3 parameters adds a new entry to the STEPS list
     set ::cucumber::STEPS [list]
   }
   -body {
-    ::cucumber::Given {^Regular Expression (\d+)$} {match} { puts "Given RegExp $match" }
+    Given {^Regular Expression (\d+)$} {match} { puts "Given RegExp $match" }
     expr { [llength $::cucumber::STEPS] == 1 && [llength [lindex $::cucumber::STEPS 0]] == 3}
   }
   -result 1
@@ -96,7 +96,7 @@ test When-1 {calling When adds a new entry to the STEPS list} {
     set ::cucumber::STEPS [list]
   }
   -body {
-    ::cucumber::When {^Regular Expression$} { puts "When RegExp" }
+    When {^Regular Expression$} { puts "When RegExp" }
     expr { [llength $::cucumber::STEPS] == 1 }
     expr { [llength $::cucumber::STEPS] == 1 && [llength [lindex $::cucumber::STEPS 0]] == 3}
   }
@@ -113,7 +113,7 @@ test Then-1 {calling Then adds a new entry to the STEPS list} {
     set ::cucumber::STEPS [list]
   }
   -body {
-    ::cucumber::Then {^Regular Expression$} { puts "Then RegExp" }
+    Then {^Regular Expression$} { puts "Then RegExp" }
     expr { [llength $::cucumber::STEPS] == 1 && [llength [lindex $::cucumber::STEPS 0]] == 3}
   }
   -result 1
@@ -129,7 +129,7 @@ test And-1 {calling And adds a new entry to the STEPS list} {
     set ::cucumber::STEPS [list]
   }
   -body {
-    ::cucumber::And {^Regular Expression$} { puts "And RegExp" }
+    And {^Regular Expression$} { puts "And RegExp" }
     expr { [llength $::cucumber::STEPS] == 1 && [llength [lindex $::cucumber::STEPS 0]] == 3}
   }
   -result 1
