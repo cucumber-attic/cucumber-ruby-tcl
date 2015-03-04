@@ -122,22 +122,6 @@ test Then-1 {calling Then adds a new entry to the STEPS list} {
 
 
 #
-# Test And
-#
-test And-1 {calling And adds a new entry to the STEPS list} {
-  -setup {
-    set ::cucumber::STEPS [list]
-  }
-  -body {
-    And {^Regular Expression$} { puts "And RegExp" }
-    expr { [llength $::cucumber::STEPS] == 1 && [llength [lindex $::cucumber::STEPS 0]] == 3}
-  }
-  -result 1
-}
-
-
-
-#
 # Test _search_steps procedure
 #
 test _search_steps-1 {_search_steps returns 0 if there are no existing steps} {

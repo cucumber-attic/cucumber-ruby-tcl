@@ -33,10 +33,6 @@ proc ::cucumber::Then args {
   _add_step {*}$args
 }
 
-proc ::cucumber::And args {
-  _add_step {*}$args
-}
-
 proc ::cucumber::_add_step args {
 
   variable STEPS
