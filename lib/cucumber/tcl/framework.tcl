@@ -1,36 +1,41 @@
 
-# Set a variable to allow this to be more easily tested
-if {[info exists env(TEST)] && $env(TEST) eq 1} {
-  set TEST 1
-} else {
-  set TEST 0
-}
+namespace eval ::cucumber:: {
+  variable STEPS [list]
+  variable TEST
 
-#TODO make this a namespace to avoid globals
-set STEPS [list]
+  # Set a variable to allow this to be more easily tested
+  if {[info exists env(TEST)] && $::env(TEST) eq 1} {
+    set TEST 1
+  } else {
+    set TEST 0
+  }
+
+  namespace export step_definition_exists
+  namespace export execute_step_definition
+  namespace export Given
+  namespace export When
+  namespace export Then
+
+}
 
 #
 # Define procs to match Gherkin keyworkds that put data in the STEPS array
 #
-proc Given args {
+proc ::cucumber::Given args {
   _add_step {*}$args
 }
 
-proc When args {
+proc ::cucumber::When args {
   _add_step {*}$args
 }
 
-proc Then args {
+proc ::cucumber::Then args {
   _add_step {*}$args
 }
 
-proc And args {
-  _add_step {*}$args
-}
+proc ::cucumber::_add_step args {
 
-proc _add_step args {
-
-  global STEPS
+  variable STEPS
 
   if {[llength $args] == 2} {
     set re [lindex $args 0]
@@ -50,21 +55,21 @@ proc _add_step args {
 
 #
 # Procs needed by cucumber for checking and executing steps
-proc step_definition_exists { step_name } {
+proc ::cucumber::step_definition_exists { step_name } {
   set res [_search_steps $step_name 0]
   return $res
 }
 
 
-proc execute_step_definition { step_name {multiline_args {}} } {
+proc ::cucumber::execute_step_definition { step_name {multiline_args {}} } {
   set res [_search_steps $step_name 1 $multiline_args]
   return $res
 
 }
 
 
-proc _search_steps {step_name {execute 0} {multiline_args {}}} {
-  global STEPS
+proc ::cucumber::_search_steps {step_name {execute 0} {multiline_args {}}} {
+  variable STEPS
 
   foreach step $STEPS {
     set existing_step_name   [lindex $step 0]
@@ -89,9 +94,16 @@ proc _search_steps {step_name {execute 0} {multiline_args {}}} {
   return 0
 }
 
-if {$TEST ne 1} {
-  #TODO let that path be configurable from cucumber-ruby
-  foreach x [glob features/**/*.tcl] {
-      source $x
+proc ::cucumber::source_steps args {
+  variable TEST
+
+  if {$TEST ne 1} {
+    #TODO let that path be configurable from cucumber-ruby
+    foreach x [glob features/**/*.tcl] {
+        source $x
+    }
   }
 }
+
+namespace import ::cucumber::*
+::cucumber::source_steps
