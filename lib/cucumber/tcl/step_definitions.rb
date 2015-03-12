@@ -5,8 +5,8 @@ module Cucumber
   module Tcl
 
     class StepDefinitions
-      def initialize(tcl)
-        @tcl = tcl
+      def initialize(tcl_framework)
+        @tcl_framework = tcl_framework
       end
 
       def attempt_to_activate(test_step)
@@ -17,13 +17,12 @@ module Cucumber
       private
 
       def match?(test_step)
-        step_name = test_step.name
-        @tcl.proc('step_definition_exists').call(step_name) == "1"
+        @tcl_framework.step_definition_exists?(test_step.name)
       end
 
       def action_for(test_step)
         arguments = ArgumentList.new(test_step)
-        proc { @tcl.proc('execute_step_definition').call(*arguments) }
+        proc { @tcl_framework.execute_step_definition(*arguments) }
       end
 
       class ArgumentList
