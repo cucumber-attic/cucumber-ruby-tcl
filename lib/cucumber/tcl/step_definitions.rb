@@ -31,7 +31,6 @@ module Cucumber
       class ExecuteResponse
         def initialize(raw)
           @raw = raw
-          # result {message}
         end
 
         def raise_any_pending_error
