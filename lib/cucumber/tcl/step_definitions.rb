@@ -22,7 +22,33 @@ module Cucumber
 
       def action_for(test_step)
         arguments = ArgumentList.new(test_step)
-        proc { @tcl_framework.execute_step_definition(*arguments) }
+        proc { 
+          response = ExecuteResponse.new(@tcl_framework.execute_step_definition(*arguments))
+          response.raise_any_pending_error
+        }
+      end
+
+      class ExecuteResponse
+        def initialize(raw)
+          @raw = raw
+          # result {message}
+        end
+
+        def raise_any_pending_error
+          if result == "pending"
+            raise Cucumber::Core::Test::Result::Pending.new(message)
+          end
+        end
+
+        def result
+          @raw.match(/^\w+/).to_s
+        end
+
+        def message
+          matches = @raw.match(/\{([^\}]+)\}/)
+          return nil unless matches
+          matches[1].to_s
+        end
       end
 
       class ArgumentList
