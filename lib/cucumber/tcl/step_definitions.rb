@@ -23,15 +23,14 @@ module Cucumber
       end
 
       def action_for(test_step)
-        step_name = test_step.name
-        arguments = ArgumentList.new(step_name)
-        test_step.source.last.multiline_arg.describe_to(arguments)
+        arguments = ArgumentList.new(test_step)
         proc { @tcl.proc('execute_step_definition').call(*arguments) }
       end
 
       class ArgumentList
-        def initialize(*args)
-          @arguments = args
+        def initialize(test_step)
+          @arguments = [test_step.name]
+          test_step.source.last.multiline_arg.describe_to self
         end
 
         def doc_string(arg)
