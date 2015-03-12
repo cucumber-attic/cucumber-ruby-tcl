@@ -10,11 +10,15 @@ end
 
 module Cucumber
   module Tcl
+    TCL_FRAMEWORK_PATH = File.dirname(__FILE__) + '/tcl/framework.tcl'
+
     def self.install(cucumber_config)
       create_step_definitions = lambda {
-        StepDefinitions.new(File.dirname(__FILE__) + '/tcl/framework.tcl')
+        tcl = ::Tcl::Interp.load_from_file(TCL_FRAMEWORK_PATH)
+        StepDefinitions.new(tcl)
       }
       cucumber_config.filters << ActivateSteps.new(create_step_definitions)
     end
+
   end
 end

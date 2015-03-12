@@ -6,7 +6,8 @@ module Cucumber::Tcl
   describe StepDefinitions do
 
     it "can activate a passing tcl step" do
-      step_definitions = StepDefinitions.new(File.dirname(__FILE__) + '/fixtures/everything_ok.tcl')
+      tcl = Tcl::Interp.load_from_file File.dirname(__FILE__) + '/fixtures/everything_ok.tcl'
+      step_definitions = StepDefinitions.new(tcl)
       location = double
       ast_step = double(name: double, location: location, multiline_arg: Cucumber::Core::Ast::EmptyMultilineArgument.new)
       test_step = Cucumber::Core::Test::Step.new([ ast_step ])

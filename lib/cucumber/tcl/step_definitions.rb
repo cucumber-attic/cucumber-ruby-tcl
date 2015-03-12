@@ -5,9 +5,8 @@ module Cucumber
   module Tcl
 
     class StepDefinitions
-      def initialize(path)
-        raise ArgumentError, "cucumber-tcl entry point #{path} does not exist." unless File.exists?(path)
-        @tcl = ::Tcl::Interp.load_from_file(path)
+      def initialize(tcl)
+        @tcl = tcl
       end
 
       def attempt_to_activate(test_step)
