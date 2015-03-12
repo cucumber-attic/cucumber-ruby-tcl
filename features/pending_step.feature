@@ -21,9 +21,13 @@ Feature: A step that is still pending implementation
     Then it should pass with:
       """
       Feature:
-      Scenario:
-      Given this step is undefined
-      1 scenario (1 undefined)
-      1 step (1 undefined)
+        Scenario:
+          Given pending
+            TODO: Step not yet implemented
+            features/step_definitions/steps.tcl:2
+            features/test.feature:3:in `Given pending'
+
+      1 scenario (1 pending)
+      1 step (1 pending)
       """
 
