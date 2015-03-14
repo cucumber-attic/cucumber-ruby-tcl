@@ -5,9 +5,8 @@ module Cucumber
   module Tcl
 
     class StepDefinitions
-      def initialize(path)
-        raise ArgumentError, "cucumber-tcl entry point #{path} does not exist." unless File.exists?(path)
-        @tcl = ::Tcl::Interp.load_from_file(path)
+      def initialize(tcl_framework)
+        @tcl_framework = tcl_framework
       end
 
       def attempt_to_activate(test_step)
@@ -18,20 +17,43 @@ module Cucumber
       private
 
       def match?(test_step)
-        step_name = test_step.name
-        @tcl.proc('step_definition_exists').call(step_name) == "1"
+        @tcl_framework.step_definition_exists?(test_step.name)
       end
 
       def action_for(test_step)
-        step_name = test_step.name
-        arguments = ArgumentList.new(step_name)
-        test_step.source.last.multiline_arg.describe_to(arguments)
-        proc { @tcl.proc('execute_step_definition').call(*arguments) }
+        arguments = ArgumentList.new(test_step)
+        proc { 
+          response = ExecuteResponse.new(@tcl_framework.execute_step_definition(*arguments))
+          response.raise_any_pending_error
+        }
+      end
+
+      class ExecuteResponse
+        def initialize(raw)
+          @raw = raw
+        end
+
+        def raise_any_pending_error
+          if result == "pending"
+            raise Cucumber::Core::Test::Result::Pending.new(message)
+          end
+        end
+
+        def result
+          @raw.match(/^\w+/).to_s
+        end
+
+        def message
+          matches = @raw.match(/\{([^\}]+)\}/)
+          return nil unless matches
+          matches[1].to_s
+        end
       end
 
       class ArgumentList
-        def initialize(*args)
-          @arguments = args
+        def initialize(test_step)
+          @arguments = [test_step.name]
+          test_step.source.last.multiline_arg.describe_to self
         end
 
         def doc_string(arg)
