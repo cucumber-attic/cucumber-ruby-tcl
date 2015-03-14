@@ -1,5 +1,6 @@
 Feature: A step that is still pending implementation
 
+  @wip
   Scenario: A un-implemented step returns pending
     Given a file named "features/test.feature" with:
       """
