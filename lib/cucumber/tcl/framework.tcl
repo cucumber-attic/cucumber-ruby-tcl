@@ -15,6 +15,7 @@ namespace eval ::cucumber:: {
   namespace export Given
   namespace export When
   namespace export Then
+  namespace export pending
 
 }
 
@@ -86,7 +87,14 @@ proc ::cucumber::_search_steps {step_name {execute 0} {multiline_args {}}} {
       }
       
       if {$execute == 1} {
-        eval $existing_step_body
+        if {[catch {
+          eval $existing_step_body
+        } msg]} {
+          if {$msg eq "pending"} {
+            return "pending"
+          }
+          error $::errorInfo
+        }
       }
       return 1
     }
@@ -103,6 +111,10 @@ proc ::cucumber::source_steps args {
         source $x
     }
   }
+}
+
+proc ::cucumber::pending args {
+  error "pending"
 }
 
 namespace import ::cucumber::*

@@ -243,6 +243,28 @@ test _search_steps-9 {_search_steps returns 1 and executes body of step if there
   -output {content=Multiline Content, match=Step*}
 }
 
+test _search_steps-10 {_search_steps returns "pending" if there is a matching step, execute is set to 1 and the proc to be executed is pending} {
+  -setup {
+    set ::cucumber::STEPS [list \
+      [list {^Pending$} {} {pending}] \
+    ]
+  }
+  -body {
+    ::cucumber::_search_steps {Pending} {1} {}
+  }
+  -result "pending"
+}
+
+#
+# Test Pending
+#
+test pending-1 {pending returns an error with the text "pending"} {
+  -setup {}
+  -body {pending}
+  -returnCodes error
+  -result {pending}
+}
+
 #
 # Cleanup
 #
