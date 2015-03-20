@@ -20,12 +20,11 @@ module Cucumber::Tcl
     it "raises a pending error when TCL returns a pending message" do
       tcl_framework = double(
         step_definition_exists?: true,
-        execute_step_definition: "pending {Step not yet implemented}"
+        execute_step_definition: "pending"
       )
       step_definitions = StepDefinitions.new(tcl_framework)
       result = step_definitions.attempt_to_activate(test_step).execute
       expect(result).to be_a Cucumber::Core::Test::Result::Pending
-      expect(result.message).to eq "Step not yet implemented"
     end
   end
 end

@@ -34,19 +34,9 @@ module Cucumber
         end
 
         def raise_any_pending_error
-          if result == "pending"
-            raise Cucumber::Core::Test::Result::Pending.new(message)
+          if @raw == "pending"
+            raise Cucumber::Core::Test::Result::Pending.new("TODO: Step not yet implemented")
           end
-        end
-
-        def result
-          @raw.match(/^\w+/).to_s
-        end
-
-        def message
-          matches = @raw.match(/\{([^\}]+)\}/)
-          return nil unless matches
-          matches[1].to_s
         end
       end
 

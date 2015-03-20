@@ -15,16 +15,17 @@ Feature: A step that is still pending implementation
     And a file named "features/step_defintions/steps.tcl" with:
       """
       Given {^pending$} {
-        pending {Step not yet implemented}
+        pending
       }
       """
-    When I run `cucumber`
-    Then it should pass with:
+    When I run `cucumber -q`
+    Then it should pass with exactly:
       """
-      Feature:
-        Scenario:
+      Feature: 
+
+        Scenario: 
           Given pending
-            TODO: Step not yet implemented
+            TODO: Step not yet implemented (Cucumber::Core::Test::Result::Pending)
             features/step_definitions/steps.tcl:2
             features/test.feature:3:in `Given pending'
 
