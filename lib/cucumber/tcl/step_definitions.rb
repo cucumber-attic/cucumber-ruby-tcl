@@ -22,7 +22,22 @@ module Cucumber
 
       def action_for(test_step)
         arguments = ArgumentList.new(test_step)
-        proc { @tcl_framework.execute_step_definition(*arguments) }
+        proc { 
+          response = ExecuteResponse.new(@tcl_framework.execute_step_definition(*arguments))
+          response.raise_any_pending_error
+        }
+      end
+
+      class ExecuteResponse
+        def initialize(raw)
+          @raw = raw
+        end
+
+        def raise_any_pending_error
+          if @raw == "pending"
+            raise Cucumber::Core::Test::Result::Pending.new("TODO: Step not yet implemented")
+          end
+        end
       end
 
       class ArgumentList

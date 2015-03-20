@@ -1,6 +1,5 @@
 Feature: DataTables
 
-  @wip
   Scenario: Match a step with a DataTable
     Given a file named "features/test.feature" with:
       """
