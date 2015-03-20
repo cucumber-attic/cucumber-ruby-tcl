@@ -46,3 +46,28 @@ Feature: Define a step
       Hello 123
       """
 
+  @wip
+  Scenario: Define a feature with no steps file
+    Given a file named "features/test.feature" with:
+      """
+      Feature:
+        Scenario:
+          Given passing
+      """
+    And a file named "features/support/env.rb" with:
+      """
+      require 'cucumber/tcl'
+      """
+    When I run `cucumber`
+    Then it should pass with:
+      """
+      Feature: 
+
+        Scenario: 
+          Given pending
+            TODO: Step not yet implemented (Cucumber::Core::Test::Result::Pending)
+            features/test.feature:3:in `Given pending'
+
+      1 scenario (1 pending)
+      1 step (1 pending)
+      """
