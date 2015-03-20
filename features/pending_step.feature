@@ -1,6 +1,13 @@
 Feature: A step that is still pending implementation
 
-  @wip
+  Calling `pending` from a Tcl step definition will fail that scenario as
+  pending.
+
+  Still to do:
+
+  - [pass a message back about why the step is pending](https://github.com/cucumber/cucumber-ruby-tcl/issues/24)
+  - [display the file:line where `pending` was called in backtrace](https://github.com/cucumber/cucumber-ruby-tcl/issues/25)
+
   Scenario: A un-implemented step returns pending
     Given a file named "features/test.feature" with:
       """
@@ -19,14 +26,13 @@ Feature: A step that is still pending implementation
       }
       """
     When I run `cucumber -q`
-    Then it should pass with exactly:
+    Then it should pass with:
       """
       Feature: 
 
         Scenario: 
           Given pending
             TODO: Step not yet implemented (Cucumber::Core::Test::Result::Pending)
-            features/step_definitions/steps.tcl:2
             features/test.feature:3:in `Given pending'
 
       1 scenario (1 pending)
