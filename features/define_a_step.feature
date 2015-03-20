@@ -52,7 +52,7 @@ Feature: Define a step
       """
       Feature:
         Scenario:
-          Given passing
+          Given undefined
       """
     And a file named "features/support/env.rb" with:
       """
@@ -63,11 +63,9 @@ Feature: Define a step
       """
       Feature: 
 
-        Scenario: 
-          Given pending
-            TODO: Step not yet implemented (Cucumber::Core::Test::Result::Pending)
-            features/test.feature:3:in `Given pending'
+        Scenario:         # features/test.feature:2
+          Given undefined # features/test.feature:3
 
-      1 scenario (1 pending)
-      1 step (1 pending)
+      1 scenario (1 undefined)
+      1 step (1 undefined)
       """
