@@ -69,7 +69,6 @@ Feature: Define a step
       1 step (1 undefined)
       """
 
-  @wip
   Scenario: Define a failing step
     Given a file named "features/test.feature" with:
       """
@@ -97,6 +96,51 @@ Feature: Define a step
             Failing Step
                 while executing
             "error "Failing Step""
+                ("eval" body line 2)
+                invoked from within
+            "eval $existing_step_body" (Tcl::Error)
+            features/test.feature:3:in `Given failing'
+      
+      Failing Scenarios:
+      cucumber features/test.feature:2 # Scenario: 
+      
+      1 scenario (1 failed)
+      1 step (1 failed)
+      """
+
+  Scenario: Define a failing step
+    Given a file named "features/test.feature" with:
+      """
+      Feature:
+        Scenario:
+          Given failing
+      """
+    And a file named "features/support/env.rb" with:
+      """
+      require 'cucumber/tcl'
+      """
+    And a file named "features/step_defintions/steps.tcl" with:
+      """
+      Given {^failing$} {
+        failing_proc
+      }
+      proc failing_proc {} {
+        error "Failing Step"
+      }
+      """
+    When I run `cucumber`
+    Then it should fail with:
+      """
+      Feature: 
+      
+        Scenario:       # features/test.feature:2
+          Given failing # features/test.feature:3
+            Failing Step
+                while executing
+            "error "Failing Step""
+                (procedure "failing_proc" line 2)
+                invoked from within
+            "failing_proc"
                 ("eval" body line 2)
                 invoked from within
             "eval $existing_step_body" (Tcl::Error)
