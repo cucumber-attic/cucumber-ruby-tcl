@@ -108,7 +108,7 @@ Feature: Define a step
       1 step (1 failed)
       """
 
-  Scenario: Define a failing step
+  Scenario: Define a step that calls a failing proc
     Given a file named "features/test.feature" with:
       """
       Feature:
