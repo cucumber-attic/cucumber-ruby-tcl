@@ -108,7 +108,9 @@ proc ::cucumber::source_steps args {
   if {$TEST ne 1} {
     #TODO let that path be configurable from cucumber-ruby
     foreach x [glob -nocomplain features/**/*.tcl] {
-        source $x
+      if {[catch {source $x} msg]} {
+        error $::errorInfo
+      }
     }
   }
 }
