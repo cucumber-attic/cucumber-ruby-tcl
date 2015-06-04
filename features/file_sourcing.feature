@@ -26,7 +26,6 @@ Feature: Sourcing tcl files
       "source $x" (Tcl::Error)
       """
 
-  @wip
   Scenario: Display stack trace with multiple levels
     Given a file named "features/test.feature" with:
       """
@@ -59,4 +58,3 @@ Feature: Sourcing tcl files
           invoked from within
       "source $x" (Tcl::Error)
       """
-
