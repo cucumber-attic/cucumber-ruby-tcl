@@ -11,7 +11,7 @@ Feature: Sourcing tcl files
       """
       require 'cucumber/tcl'
       """
-    And a file named "features/support/env.tcl" with:
+    And a file named "features/support/helper.tcl" with:
       """
       error "Fail sourcing"
       """
@@ -21,7 +21,7 @@ Feature: Sourcing tcl files
       Fail sourcing
           while executing
       "error "Fail sourcing""
-          (file "features/support/env.tcl" line 1)
+          (file "features/support/helper.tcl" line 1)
           invoked from within
       "source $x" (Tcl::Error)
       """
@@ -38,7 +38,7 @@ Feature: Sourcing tcl files
       """
       require 'cucumber/tcl'
       """
-    And a file named "features/support/env.tcl" with:
+    And a file named "features/support/helper.tcl" with:
       """
       proc test_proc args {
         proc_doesnt_exist
@@ -55,7 +55,7 @@ Feature: Sourcing tcl files
           (procedure "test_proc" line 2)
           invoked from within
       "test_proc"
-          (file "features/support/env.tcl" line 5)
+          (file "features/support/helper.tcl" line 5)
           invoked from within
       "source $x" (Tcl::Error)
       """
