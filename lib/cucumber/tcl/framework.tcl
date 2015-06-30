@@ -103,7 +103,7 @@ proc ::cucumber::_search_steps {step_name {execute 0} {multiline_args {}}} {
   return 0
 }
 
-# Sort a list of files such that: */source/env.{ext} < */source/{file} < */{file}
+# Sort a list of files such that: */support/env.{ext} < */support/{file} < */{file}
 proc ::cucumber::_sort_by_source_priority {a b} {
 
   if {[string equal [lindex [file split $a] end-1] "support"]} {
