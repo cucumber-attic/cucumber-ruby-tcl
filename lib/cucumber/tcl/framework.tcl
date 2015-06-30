@@ -10,6 +10,7 @@ namespace eval ::cucumber:: {
     set TEST 0
   }
 
+  namespace export source_files
   namespace export step_definition_exists
   namespace export execute_step_definition
   namespace export Given
@@ -102,14 +103,43 @@ proc ::cucumber::_search_steps {step_name {execute 0} {multiline_args {}}} {
   return 0
 }
 
-proc ::cucumber::source_steps args {
+# Sort a list of files such that: */source/env.{ext} < */source/{file} < */{file}
+proc ::cucumber::_sort_by_source_priority {a b} {
+
+  if {[string equal [lindex [file split $a] end-1] "support"]} {
+    if {[string equal [file rootname [lindex [file split $a] end]] "env"]} {
+      set a_order 1
+    } else {
+      set a_order 2
+    }
+  } else {
+    set a_order 3
+  }
+
+  if {[string equal [lindex [file split $b] end-1] "support"]} {
+    if {[string equal [file rootname [lindex [file split $b] end]] "env"]} {
+      set b_order 1
+    } else {
+      set b_order 2
+    }
+  } else {
+    set b_order 3
+  }
+
+  return [expr {$a_order - $b_order}]
+}
+
+proc ::cucumber::source_files {files} {
   variable TEST
 
   if {$TEST ne 1} {
-    #TODO let that path be configurable from cucumber-ruby
-    foreach x [glob -nocomplain features/**/*.tcl] {
-      if {[catch {source $x} msg]} {
-        error $::errorInfo
+    foreach file [lsort -unique -command _sort_by_source_priority $files] {
+      if {[string equal [file extension $file] ".tcl"]} {
+        if {[catch {
+          uplevel #0 [list source $file]
+        }]} {
+          error $::errorInfo
+        }
       }
     }
   }
@@ -120,4 +150,3 @@ proc ::cucumber::pending args {
 }
 
 namespace import ::cucumber::*
-::cucumber::source_steps

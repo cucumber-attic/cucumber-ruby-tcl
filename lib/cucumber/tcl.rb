@@ -14,7 +14,7 @@ module Cucumber
 
     def self.install(cucumber_config)
       create_step_definitions = lambda {
-        StepDefinitions.new(Framework.new)
+        StepDefinitions.new(Framework.new(cucumber_config))
       }
       cucumber_config.filters << ActivateSteps.new(create_step_definitions)
     end
