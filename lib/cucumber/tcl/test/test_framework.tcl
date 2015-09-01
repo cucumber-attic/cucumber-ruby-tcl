@@ -122,6 +122,56 @@ test Then-1 {calling Then adds a new entry to the STEPS list} {
 
 
 #
+# Test _sort_by_source_priority procedure
+#
+test _sort_by_source_priority-1 {_sort_by_source_priority prioritises support/env.{ext} over other support/ files} {
+  -body {
+    set sort [::cucumber::_sort_by_source_priority "test/support/abc.ext" "test/support/env.ext"]
+    # only interested if sort is +ve, 0 or -ve; convert to 1, 0 or -1
+    expr { $sort == 0 ? 0 : $sort / abs($sort) }
+  }
+  -result 1
+}
+
+test _sort_by_source_priority-2 {_sort_by_source_priority prioritises support/env.{ext} over other support/ files} {
+  -body {
+    set sort [::cucumber::_sort_by_source_priority "test/support/env.ext" "test/support/abc.ext"]
+    # only interested if sort is +ve, 0 or -ve; convert to 1, 0 or -1
+    expr { $sort == 0 ? 0 : $sort / abs($sort) }
+  }
+  -result -1
+}
+
+test _sort_by_source_priority-3 {_sort_by_source_priority prioritises support/ files over other files} {
+  -body {
+    set sort [::cucumber::_sort_by_source_priority "test/features/abc.ext" "test/support/abc.ext"]
+    # only interested if sort is +ve, 0 or -ve; convert to 1, 0 or -1
+    expr { $sort == 0 ? 0 : $sort / abs($sort) }
+  }
+  -result 1
+}
+
+test _sort_by_source_priority-4 {_sort_by_source_priority prioritises support/ files over other files} {
+  -body {
+    set sort [::cucumber::_sort_by_source_priority "test/support/abc.ext" "test/features/abc.ext"]
+    # only interested if sort is +ve, 0 or -ve; convert to 1, 0 or -1
+    expr { $sort == 0 ? 0 : $sort / abs($sort) }
+  }
+  -result -1
+}
+
+test _sort_by_source_priority-5 {_sort_by_source_priority prioritises non support/ files equally} {
+  -body {
+    set sort [::cucumber::_sort_by_source_priority "test/lib/abc.ext" "test/etc/abc.ext"]
+    # only interested if sort is +ve, 0 or -ve; convert to 1, 0 or -1
+    expr { $sort == 0 ? 0 : $sort / abs($sort) }
+  }
+  -result 0
+}
+
+
+
+#
 # Test _search_steps procedure
 #
 test _search_steps-1 {_search_steps returns 0 if there are no existing steps} {
