@@ -12,7 +12,7 @@ module Cucumber::Tcl
 
     it "can activate a passing tcl step" do
       path = File.dirname(__FILE__) + '/fixtures/everything_ok.tcl'
-      tcl_framework = Framework.new(path)
+      tcl_framework = Framework.new(nil, path)
       step_definitions = StepDefinitions.new(tcl_framework)
       expect(step_definitions.attempt_to_activate(test_step).location).to eq location
     end

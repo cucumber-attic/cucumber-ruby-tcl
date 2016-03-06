@@ -1,3 +1,6 @@
+proc source_files { files } {
+}
+
 proc execute_step_definition { step_name } {
 }
 
