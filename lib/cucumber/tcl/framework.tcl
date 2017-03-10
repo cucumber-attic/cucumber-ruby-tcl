@@ -133,7 +133,7 @@ proc ::cucumber::source_files {files} {
   variable TEST
 
   if {$TEST ne 1} {
-    foreach file [lsort -unique -command _sort_by_source_priority $files] {
+    foreach file [lsort -command _sort_by_source_priority $files] {
       if {[string equal [file extension $file] ".tcl"]} {
         if {[catch {
           uplevel #0 [list source $file]

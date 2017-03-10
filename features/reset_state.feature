@@ -40,15 +40,25 @@ Feature: Reset state
 	
   Scenario: State is not reset when running 'cucumber' with no options
     When I run `cucumber`
-    Then the exit status should be 1
+    Then it should fail with:
+       """
+       can't read "::g": no such variable
+       """
 
   Scenario: State reset when running 'cucumber' with the new interpreter flag on
     When I run `cucumber NEW_INTERPRETER=1`
-    Then the exit status should be 1
+    Then it should fail with:
+       """
+       can't read "::g": no such variable
+       """
 
-  Scenario: State not reset when running 'cucumber' with new interpreter flag OF
+  Scenario: State not reset when running 'cucumber' with new interpreter flag off
     When I run `cucumber NEW_INTERPRETER=0`
-    Then the exit status should be 0
+    Then it should pass with:
+      """
+      2 scenarios (2 passed)
+      3 steps (3 passed)
+      """
 
     # TODO (sbristow): This step fails because the actual Cucumber output
     # does not match exactly the expected output.  It looks like
