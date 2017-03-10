@@ -59,27 +59,3 @@ Feature: Reset state
       2 scenarios (2 passed)
       3 steps (3 passed)
       """
-
-    # TODO (sbristow): This step fails because the actual Cucumber output
-    # does not match exactly the expected output.  It looks like
-    # the "puts" command inside the step definition is writing
-    # to the output buffer, which somehow ends up with output
-    # printed out of order.  The value of '$value' is printed
-    # above the Scenario rather than the step it's called in.
-    # This is difficult to debug and I've not found the problem as of yet.
-    #Then it should pass with:
-    #  """
-    #  Feature: 
-
-    #    Scenario:                          # features/test.feature:2
-    #      Given I set a global variable    # features/test.feature:3
-    #  value
-    #      When I print the global variable # features/test.feature:4
-
-    #    Scenario:                          # features/test.feature:6
-    #  value
-    #      When I print the global variable # features/test.feature:7
-
-    #  2 scenarios (2 passed)
-    #  3 steps (3 passed)
-    #  """
