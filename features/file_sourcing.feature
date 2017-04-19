@@ -7,9 +7,13 @@ Feature: Sourcing tcl files
         Scenario:
           Given testing file sourcing
       """
-    And a file named "features/step_definitions/steps.tcl" with:
+    And a file named "features/step_definitions/steps_a.tcl" with:
       """
-      puts "Sourced step_definitions/steps.tcl"
+      puts "Sourced step_definitions/steps_a.tcl"
+      """
+    And a file named "features/step_definitions/steps_b.tcl" with:
+      """
+      puts "Sourced step_definitions/steps_b.tcl"
       """
     And a file named "features/support/db.tcl" with:
       """
@@ -28,7 +32,8 @@ Feature: Sourcing tcl files
       """
       Sourced support/env.tcl
       Sourced support/db.tcl
-      Sourced step_definitions/steps.tcl
+      Sourced step_definitions/steps_a.tcl
+      Sourced step_definitions/steps_b.tcl
       """
 
   Scenario: Source files in the appropriate order (with command line options)

@@ -3,7 +3,14 @@ Feature: Reset state
   In order to keep state from leaking between scenarios, by default,
   we create a new Tcl interpreter for each test case.
 
-  Scenario: Set a global variable in one scenario and access it in another
+  In order to prevent long setup time before each scenario
+  we can optionally avoid starting a new TCL interpreter
+
+  Rules:
+    -- The state is maintained between scenarios if an environment variable is passed into Cucumber
+    -- Otherwise a new TCL interpreter is started and state is reset on each scenario
+
+  Background:
     Given a file named "features/test.feature" with:
       """
       Feature:
@@ -30,8 +37,25 @@ Feature: Reset state
       """
       require 'cucumber/tcl'
       """
+	
+  Scenario: State reset when running 'cucumber' with no options
     When I run `cucumber`
     Then it should fail with:
+       """
+       can't read "::g": no such variable
+       """
+
+  Scenario: State reset when running 'cucumber' with a new framework object for each scenario
+    When I run `cucumber SHARE_FRAMEWORK=0`
+    Then it should fail with:
+       """
+       can't read "::g": no such variable
+       """
+
+  Scenario: State not reset when running 'cucumber' and sharing framework object
+    When I run `cucumber SHARE_FRAMEWORK=1`
+    Then it should pass with:
       """
-      can't read "::g": no such variable
+      2 scenarios (2 passed)
+      3 steps (3 passed)
       """
