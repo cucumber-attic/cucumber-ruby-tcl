@@ -14,17 +14,13 @@ module Cucumber
 
     def self.install(cucumber_config)
       # Unless configured off, we should start up a new
-      # framework for each scenarion, which results
+      # framework for each scenario, which results
       # in a new TCL interpreter.  This can be used
       # to check that there is no data leakage between
       # scenarios when testing poorly understood code
-      if ENV["NEW_INTERPRETER"].nil?
-          new_interpreter = 1
-      else 
-          new_interpreter = ENV['NEW_INTERPRETER'].to_i
-      end
+      share_framework = (ENV['SHARE_FRAMEWORK'] == '1')
 
-      if new_interpreter == 1
+      if !share_framework
           create_step_definitions = lambda {
             StepDefinitions.new(Framework.new(cucumber_config))
           }

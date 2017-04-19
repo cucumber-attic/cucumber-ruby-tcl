@@ -23,6 +23,7 @@ To become a release manager, create a pull request adding your name to the list 
 Current release managers:
   * [Matt Wynne](https://rubygems.org/profiles/mattwynne)
   * [Jonathan Owers](https://rubygems.org/profiles/jowers)
+  * [Shaun Bristow](https://rubygems.org/profiles/ahhbristow)
 
 To grant release privilege, issue the following command:
 

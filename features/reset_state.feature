@@ -38,22 +38,22 @@ Feature: Reset state
       require 'cucumber/tcl'
       """
 	
-  Scenario: State is not reset when running 'cucumber' with no options
+  Scenario: State reset when running 'cucumber' with no options
     When I run `cucumber`
     Then it should fail with:
        """
        can't read "::g": no such variable
        """
 
-  Scenario: State reset when running 'cucumber' with the new interpreter flag on
-    When I run `cucumber NEW_INTERPRETER=1`
+  Scenario: State reset when running 'cucumber' with a new framework object for each scenario
+    When I run `cucumber SHARE_FRAMEWORK=0`
     Then it should fail with:
        """
        can't read "::g": no such variable
        """
 
-  Scenario: State not reset when running 'cucumber' with new interpreter flag off
-    When I run `cucumber NEW_INTERPRETER=0`
+  Scenario: State not reset when running 'cucumber' and sharing framework object
+    When I run `cucumber SHARE_FRAMEWORK=1`
     Then it should pass with:
       """
       2 scenarios (2 passed)
