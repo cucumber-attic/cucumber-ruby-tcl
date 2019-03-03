@@ -7,6 +7,7 @@ module Cucumber
     class StepDefinitions
       def initialize(tcl_framework)
         @tcl_framework = tcl_framework
+        @tcl_framework.next_scenario
       end
 
       def attempt_to_activate(test_step)
@@ -22,7 +23,7 @@ module Cucumber
 
       def action_for(test_step)
         arguments = ArgumentList.new(test_step)
-        proc { 
+        proc {
           response = ExecuteResponse.new(@tcl_framework.execute_step_definition(*arguments))
           response.raise_any_pending_error
         }

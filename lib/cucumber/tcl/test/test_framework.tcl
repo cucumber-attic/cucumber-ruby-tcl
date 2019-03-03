@@ -7,10 +7,14 @@ namespace import cucumber::*
 #
 # Test Given
 #
+
+variable SETUP {
+  set ::cucumber::STEPS [list]
+  ::cucumber::next_scenario
+}
+
 test Given-1 {calling Given with 2 parameters adds a new entry to the STEPS list with an empty parameters list} {
-  -setup {
-    set ::cucumber::STEPS [list]
-  }
+  -setup $SETUP
   -body {
     Given {^Regular Expression$} { puts "Given RegExp" }
     expr { [llength $::cucumber::STEPS] == 1 && [llength [lindex $::cucumber::STEPS 0]] == 3}
@@ -19,9 +23,7 @@ test Given-1 {calling Given with 2 parameters adds a new entry to the STEPS list
 }
 
 test Given-2 {calling Given twice adds 2 entries to the STEPS list} {
-  -setup {
-    set ::cucumber::STEPS [list]
-  }
+  -setup $SETUP
   -body {
     Given {^Regular Expression$} { puts "Given RegExp" }
     Given {^Regular Expression 2$} { puts "Given RegExp 2" }
@@ -31,9 +33,7 @@ test Given-2 {calling Given twice adds 2 entries to the STEPS list} {
 }
 
 test Given-3 {calling Given with 3 parameters adds a new entry to the STEPS list} {
-  -setup {
-    set ::cucumber::STEPS [list]
-  }
+  -setup $SETUP
   -body {
     Given {^Regular Expression (\d+)$} {match} { puts "Given RegExp $match" }
     expr { [llength $::cucumber::STEPS] == 1 && [llength [lindex $::cucumber::STEPS 0]] == 3}
@@ -45,9 +45,7 @@ test Given-3 {calling Given with 3 parameters adds a new entry to the STEPS list
 # Test _add_step
 #
 test _add_step-1 {calling _add_step with 2 parameters adds a new entry to the STEPS list with an empty parameters list} {
-  -setup {
-    set ::cucumber::STEPS [list]
-  }
+  -setup $SETUP
   -body {
     ::cucumber::_add_step {^Regular Expression$} { puts "Given RegExp" }
     expr { [llength $::cucumber::STEPS] == 1 && [llength [lindex $::cucumber::STEPS 0]] == 3}
@@ -56,9 +54,7 @@ test _add_step-1 {calling _add_step with 2 parameters adds a new entry to the ST
 }
 
 test _add_step-2 {calling _add_step twice adds 2 entries to the STEPS list} {
-  -setup {
-    set ::cucumber::STEPS [list]
-  }
+  -setup $SETUP
   -body {
     ::cucumber::_add_step {^Regular Expression$} { puts "Given RegExp" }
     ::cucumber::_add_step {^Regular Expression 2$} { puts "Given RegExp 2" }
@@ -68,9 +64,7 @@ test _add_step-2 {calling _add_step twice adds 2 entries to the STEPS list} {
 }
 
 test _add_step-3 {calling _add_step with 3 parameters adds a new entry to the STEPS list} {
-  -setup {
-    set ::cucumber::STEPS [list]
-  }
+  -setup $SETUP
   -body {
     ::cucumber::_add_step {^Regular Expression (\d+)$} {match} { puts "Given RegExp $match" }
     expr { [llength $::cucumber::STEPS] == 1 && [llength [lindex $::cucumber::STEPS 0]] == 3}
@@ -92,9 +86,7 @@ test _add_step-4 {calling _add_step with more than 3 parameters adds a new entry
 # Test When
 #
 test When-1 {calling When adds a new entry to the STEPS list} {
-  -setup {
-    set ::cucumber::STEPS [list]
-  }
+  -setup $SETUP
   -body {
     When {^Regular Expression$} { puts "When RegExp" }
     expr { [llength $::cucumber::STEPS] == 1 }
@@ -109,9 +101,7 @@ test When-1 {calling When adds a new entry to the STEPS list} {
 # Test Then
 #
 test Then-1 {calling Then adds a new entry to the STEPS list} {
-  -setup {
-    set ::cucumber::STEPS [list]
-  }
+  -setup $SETUP
   -body {
     Then {^Regular Expression$} { puts "Then RegExp" }
     expr { [llength $::cucumber::STEPS] == 1 && [llength [lindex $::cucumber::STEPS 0]] == 3}
@@ -175,9 +165,7 @@ test _sort_by_source_priority-5 {_sort_by_source_priority prioritises non suppor
 # Test _search_steps procedure
 #
 test _search_steps-1 {_search_steps returns 0 if there are no existing steps} {
-  -setup {
-    set ::cucumber::STEPS [list]
-  }
+  -setup $SETUP
   -body {
     ::cucumber::_search_steps {Unknown Regexp}
   }
@@ -185,9 +173,7 @@ test _search_steps-1 {_search_steps returns 0 if there are no existing steps} {
 }
 
 test _search_steps-2 {_search_steps returns 0 if there are no matching steps} {
-  -setup {
-    set ::cucumber::STEPS [list [list {^First Step$} {} {puts "First Step"}]]
-  }
+  -setup $SETUP
   -body {
     ::cucumber::_search_steps {Unknown Regexp}
   }
@@ -196,6 +182,7 @@ test _search_steps-2 {_search_steps returns 0 if there are no matching steps} {
 
 test _search_steps-3 {_search_steps returns 1 if there is a matching step} {
   -setup {
+    eval $SETUP
     set ::cucumber::STEPS [list [list {^First Step$} {} {puts "First Step"}]]
   }
   -body {
@@ -206,6 +193,7 @@ test _search_steps-3 {_search_steps returns 1 if there is a matching step} {
 
 test _search_steps-4 {_search_steps returns 1 if there is a matching step with multiple values in STEPS} {
   -setup {
+    eval $SETUP
     set ::cucumber::STEPS [list \
       [list {^First Step$} {} {puts "First Step"}] \
       [list {^Second Step$} {} {puts "Second Step"}] \
@@ -223,7 +211,8 @@ test _search_steps-5 {_search_steps returns 1 and executes body of step if there
       [list {^First Step$} {} {puts "First Step"}] \
       [list {^Second Step$} {} {puts "Second Step"}] \
     ]
-  }
+    ::cucumber::next_scenario
+    }
   -body {
     ::cucumber::_search_steps {Second Step} {1}
   }
@@ -238,6 +227,7 @@ test _search_steps-6 {_search_steps returns 1 and executes body of step if there
       [list {^First Step$} {} {puts "First Step"}] \
       [list {^Second (\w+)$} {match} {puts "Second $match"}] \
     ]
+    ::cucumber::next_scenario
   }
   -body {
     ::cucumber::_search_steps {Second Step} {1}
@@ -253,6 +243,7 @@ test _search_steps-7 {_search_steps returns 1 and executes body of step if there
       [list {^First Step$} {} {puts "First Step"}] \
       [list {^(\w+) (\w+)$} {match1 match2} {puts "$match1 $match2"}] \
     ]
+    ::cucumber::next_scenario
   }
   -body {
     ::cucumber::_search_steps {Second Step} {1}
@@ -269,6 +260,7 @@ test _search_steps-8 {_search_steps returns 1 and executes body of step if there
       [list {^First Step$} {} {puts "First Step"}] \
       [list {^Second Step:$} {content} {puts "$content"}] \
     ]
+    ::cucumber::next_scenario
   }
   -body {
     ::cucumber::_search_steps {Second Step:} {1} {Multiline Content}
@@ -284,6 +276,7 @@ test _search_steps-9 {_search_steps returns 1 and executes body of step if there
       [list {^First Step$} {} {puts "First Step"}] \
       [list {^Second (\w+):$} {match1 content} {puts "content=$content, match=$match1"}] \
     ]
+    ::cucumber::next_scenario
   }
   -body {
     ::cucumber::_search_steps {Second Step:} {1} {Multiline Content}
@@ -305,6 +298,23 @@ test _search_steps-10 {_search_steps returns "pending" if there is a matching st
   -result "pending"
 }
 
+test _next_scenario_namespace {_next_scenario causes step to be executed in a new namespace} {
+  -setup {
+    set ::cucumber::STEPS [list \
+      [list {^First Step$} {} {set ::ns1 [namespace current]}] \
+      [list {^Second Step$} {} {puts [string equal $::ns1 [namespace current]]}] \
+    ]
+    ::cucumber::next_scenario
+  }
+  -body {
+    ::cucumber::_search_steps {First Step} {1}
+    ::cucumber::next_scenario
+    ::cucumber::_search_steps {Second Step} {1}
+  }
+  -result 1
+  -match glob
+  -output {0*}
+}
 #
 # Test Pending
 #

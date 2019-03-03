@@ -18,6 +18,10 @@ module Cucumber
       def execute_step_definition(*args)
         @tcl.proc('execute_step_definition').call(*args)
       end
+
+      def next_scenario()
+        @tcl.proc('next_scenario').call()
+      end
     end
   end
 end

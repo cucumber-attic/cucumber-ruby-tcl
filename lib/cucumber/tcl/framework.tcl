@@ -2,6 +2,7 @@
 namespace eval ::cucumber:: {
   variable STEPS [list]
   variable TEST
+  variable SCENARIO 0
 
   # Set a variable to allow this to be more easily tested
   if {[info exists env(TEST)] && $::env(TEST) eq 1} {
@@ -11,6 +12,7 @@ namespace eval ::cucumber:: {
   }
 
   namespace export source_files
+  namespace export next_scenario
   namespace export step_definition_exists
   namespace export execute_step_definition
   namespace export Given
@@ -21,7 +23,7 @@ namespace eval ::cucumber:: {
 }
 
 #
-# Define procs to match Gherkin keyworkds that put data in the STEPS array
+# Define procs to match Gherkin keywords that put data in the STEPS array
 #
 proc ::cucumber::Given args {
   _add_step {*}$args
@@ -51,7 +53,7 @@ proc ::cucumber::_add_step args {
     error "The parameters for this procedure are regular_expression ?list_of_capture_variables? body"
     return 0
   }
-    
+
   lappend STEPS [list $re $params $body]
 }
 
@@ -72,35 +74,51 @@ proc ::cucumber::execute_step_definition { step_name {multiline_args {}} } {
 
 proc ::cucumber::_search_steps {step_name {execute 0} {multiline_args {}}} {
   variable STEPS
+  variable SCENARIO
 
   foreach step $STEPS {
     set existing_step_name   [lindex $step 0]
     set existing_step_params [lindex $step 1]
     set existing_step_body   [lindex $step 2]
 
-    if {[regexp $existing_step_name $step_name matchresult {*}[join $existing_step_params]]} {
+    if {[regexp $existing_step_name $step_name]} {
+      if {$execute == 1} {
+        set res [::cucumber::scenario_${SCENARIO}::execute_step $existing_step_name $existing_step_params $step_name $existing_step_body $multiline_args]
+        return $res
+      } else {
+        return 1
+      }
+    }
+  }
+  return 0
+}
 
+proc ::cucumber::next_scenario {} {
+  variable SCENARIO
+  incr SCENARIO
+
+  namespace eval ::cucumber::scenario_$SCENARIO {
+
+    proc execute_step {step_signature step_params step_call step_body multiline_args} {
+      regexp $step_signature $step_call matchresult {*}[join $step_params]
       # Now we've found a match, handle multiline args. The name of the var
       # should be the last value of the $existing_step_params.
       if {$multiline_args ne {}} {
-        set multiline_var_name [lindex $existing_step_params end]
+        set multiline_var_name [lindex $step_params end]
         set $multiline_var_name $multiline_args
       }
-      
-      if {$execute == 1} {
-        if {[catch {
-          eval $existing_step_body
-        } msg]} {
-          if {$msg eq "pending"} {
-            return "pending"
-          }
-          error $::errorInfo
+
+      if {[catch {
+            eval $step_body
+          } msg]} {
+        if {$msg eq "pending"} {
+          return "pending"
         }
+        error $::errorInfo
       }
       return 1
     }
   }
-  return 0
 }
 
 # Sort a list of files such that: */support/env.{ext} < */support/{file} < */{file}
