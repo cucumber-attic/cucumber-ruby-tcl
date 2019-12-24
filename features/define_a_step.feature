@@ -98,7 +98,7 @@ Feature: Define a step
             "error "Failing Step""
                 ("eval" body line 2)
                 invoked from within
-            "eval $existing_step_body" (Tcl::Error)
+            "eval $step_body" (Tcl::Error)
             features/test.feature:3:in `Given failing'
       
       Failing Scenarios:
@@ -143,7 +143,7 @@ Feature: Define a step
             "failing_proc"
                 ("eval" body line 2)
                 invoked from within
-            "eval $existing_step_body" (Tcl::Error)
+            "eval $step_body" (Tcl::Error)
             features/test.feature:3:in `Given failing'
       
       Failing Scenarios:
